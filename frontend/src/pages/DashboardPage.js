@@ -14,13 +14,13 @@ export default function DashboardPage() {
   const [reports, setReports] = useState([]);
   const [stats, setStats] = useState({ total: 0, pending: 0, underReview: 0, resolved: 0, rejected: 0 });
   const [loading, setLoading] = useState(true);
-  const [filters, setFilters] = useState({ status: "", crimeType: "", search: "" });
+  const [filters, setFilters] = useState({ status: "", crimeType: "", search: "", level: "" });
 
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
       const [rRes, sRes] = await Promise.all([
-        reportAPI.getAll({ status: filters.status || undefined, crimeType: filters.crimeType || undefined, search: filters.search || undefined }),
+        reportAPI.getAll({ status: filters.status || undefined, crimeType: filters.crimeType || undefined, search: filters.search || undefined, level: filters.level || undefined }),
         reportAPI.getStats(),
       ]);
       setReports(rRes.data.reports);
@@ -80,14 +80,22 @@ export default function DashboardPage() {
             <Search size={14} style={{ position: "absolute", left: 11, top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
             <input className="form-control" style={{ paddingLeft: 34, height: 38, fontSize: 13 }} placeholder="Search by ID, location, type..." value={filters.search} onChange={e => setFilters(f => ({ ...f, search: e.target.value }))} />
           </div>
+          {user?.role === "dgp" && (
+            <select className="form-control" style={{ width: "auto", height: 38, fontSize: 13, flex: "0 1 120px" }} value={filters.level || ""} onChange={e => setFilters(f => ({ ...f, level: e.target.value }))}>
+              <option value="">All Tiers</option>
+              <option value="ci">CI Level</option>
+              <option value="sp">SP Level</option>
+              <option value="dgp">DGP Level</option>
+            </select>
+          )}
           <select className="form-control" style={{ width: "auto", height: 38, fontSize: 13, flex: "0 1 140px" }} value={filters.status} onChange={e => setFilters(f => ({ ...f, status: e.target.value }))}>
             {STATUSES.map(s => <option key={s} value={s}>{s || "All Statuses"}</option>)}
           </select>
           <select className="form-control" style={{ width: "auto", height: 38, fontSize: 13, flex: "0 1 150px" }} value={filters.crimeType} onChange={e => setFilters(f => ({ ...f, crimeType: e.target.value }))}>
             {CRIME_TYPES.map(t => <option key={t} value={t}>{t || "All Types"}</option>)}
           </select>
-          {(filters.search || filters.status || filters.crimeType) && (
-            <button className="btn btn-sm btn-outline" onClick={() => setFilters({ status: "", crimeType: "", search: "" })} style={{ whiteSpace: "nowrap" }}>Clear filters</button>
+          {(filters.search || filters.status || filters.crimeType || filters.level) && (
+            <button className="btn btn-sm btn-outline" onClick={() => setFilters({ status: "", crimeType: "", search: "", level: "" })} style={{ whiteSpace: "nowrap" }}>Clear filters</button>
           )}
         </div>
 
@@ -112,6 +120,7 @@ export default function DashboardPage() {
                   <th>Location</th>
                   <th>Priority</th>
                   <th>Status</th>
+                  <th>Level</th>
                   <th>Submitted</th>
                   <th>Action</th>
                 </tr>
@@ -119,11 +128,15 @@ export default function DashboardPage() {
               <tbody>
                 {reports.map(r => (
                   <tr key={r.id}>
-                    <td><code style={{ fontSize: 12, color: "var(--accent-cyan)", background: "var(--accent-cyan-dim)", padding: "2px 8px", borderRadius: 4 }}>{r.trackingId}</code></td>
+                    <td>
+                      <code style={{ fontSize: 12, color: "var(--accent-cyan)", background: "var(--accent-cyan-dim)", padding: "2px 8px", borderRadius: 4 }}>{r.trackingId}</code>
+                      {r.corruptionFlagRaised && <AlertTriangle size={14} color="var(--accent-amber)" style={{ marginLeft: 6, display: "inline-block", verticalAlign: "middle" }} title="Corruption Flag Escalated" />}
+                    </td>
                     <td style={{ fontWeight: 500 }}>{r.crimeType}</td>
                     <td style={{ color: "var(--text-secondary)", fontSize: 13, maxWidth: 200, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{r.address}</td>
                     <td><PriorityBadge priority={r.priority} /></td>
                     <td><StatusBadge status={r.status} /></td>
+                    <td style={{ color: "var(--text-secondary)", fontSize: 12, textTransform: "uppercase", fontWeight: 600 }}>{r.currentLevel}</td>
                     <td style={{ color: "var(--text-secondary)", fontSize: 12, whiteSpace: "nowrap" }}>{formatDate(r.submittedAt)}</td>
                     <td>
                       <Link to={`/dashboard/report/${r.id}`} className="btn btn-outline btn-sm">View</Link>

@@ -15,7 +15,7 @@ const authenticateToken = (req, res, next) => {
     if (!official) {
       return res.status(401).json({ success: false, message: "Invalid token. Official not found." });
     }
-    req.user = { id: official.id, name: official.name, badgeId: official.badgeId, rank: official.rank, role: official.role };
+    req.user = { id: official.id, name: official.name, officerId: official.officerId, rank: official.rank, role: official.role };
     next();
   } catch (err) {
     return res.status(403).json({ success: false, message: "Invalid or expired token." });
@@ -24,10 +24,19 @@ const authenticateToken = (req, res, next) => {
 
 const generateToken = (official) => {
   return jwt.sign(
-    { id: official.id, badgeId: official.badgeId, role: official.role },
+    { id: official.id, officerId: official.officerId, role: official.role },
     JWT_SECRET,
     { expiresIn: "8h" }
   );
 };
 
-module.exports = { authenticateToken, generateToken };
+const requireRole = (...roles) => {
+  return (req, res, next) => {
+    if (!req.user || !roles.includes(req.user.role)) {
+      return res.status(403).json({ success: false, message: "Access denied. Insufficient role permissions." });
+    }
+    next();
+  };
+};
+
+module.exports = { authenticateToken, generateToken, requireRole };

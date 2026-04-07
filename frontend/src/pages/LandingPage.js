@@ -98,10 +98,6 @@ export default function LandingPage() {
 
           {/* Left: hero text */}
           <div className="animate-fadeInUp">
-            <div className="section-tag">
-              <Lock size={13} />
-              Secure Portal
-            </div>
             <h1 style={{ fontSize: "clamp(36px, 5vw, 58px)", fontWeight: 800, lineHeight: 1.1, marginBottom: 20 }}>
               Report Crime<br />
               <span style={{ color: "var(--accent-cyan)" }}>Safely &amp; Anonymously</span>
@@ -168,7 +164,7 @@ export default function LandingPage() {
                     <Shield size={22} color="#fff" />
                   </div>
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 600, fontSize: 15, marginBottom: 2 }}>Police / Higher Official</div>
+                    <div style={{ fontWeight: 600, fontSize: 15, marginBottom: 2 }}>CI / SP / DGP Official</div>
                     <div style={{ color: "var(--text-secondary)", fontSize: 13 }}>Login to view and verify reports</div>
                   </div>
                   <ArrowRight size={18} color="var(--text-muted)" />

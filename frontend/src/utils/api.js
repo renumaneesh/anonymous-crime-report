@@ -39,8 +39,13 @@ export const reportAPI = {
   track: (trackingId) => API.get(`/reports/track/${trackingId}`),
   getAll: (params) => API.get("/reports", { params }),
   getById: (id) => API.get(`/reports/${id}`),
+  getHistory: (id) => API.get(`/reports/${id}/history`),
   getStats: () => API.get("/reports/stats"),
   update: (id, data) => API.patch(`/reports/${id}`, data),
+};
+
+export const escalationAPI = {
+  raise: (data) => API.post("/escalate", data)
 };
 
 export default API;

@@ -13,6 +13,7 @@ export default function ReportPage() {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [trackingId, setTrackingId] = useState("");
+  const [submitResult, setSubmitResult] = useState(null);
   const [form, setForm] = useState({ crimeType: "", description: "", address: "", landmark: "", priority: "Medium" });
   const [errors, setErrors] = useState({});
 
@@ -32,6 +33,7 @@ export default function ReportPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
+
     setLoading(true);
     try {
       const fd = new FormData();
@@ -39,6 +41,7 @@ export default function ReportPage() {
       files.forEach(f => fd.append("files", f));
       const res = await reportAPI.submit(fd);
       setTrackingId(res.data.trackingId);
+      setSubmitResult(res.data);
       setStep(3);
     } catch (err) {
       toast.error(err.response?.data?.message || "Submission failed. Please try again.");
@@ -54,6 +57,36 @@ export default function ReportPage() {
 
   // Step 3: Success
   if (step === 3) {
+    if (submitResult && submitResult.likelyFake) {
+      return (
+        <div style={{ minHeight: "100vh", paddingTop: 80, background: "var(--gradient-hero)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ maxWidth: 480, width: "100%", margin: "0 auto", padding: "0 24px" }} className="animate-fadeInUp">
+            <div className="card" style={{ textAlign: "center", padding: 40 }}>
+              <div style={{ width: 72, height: 72, borderRadius: "50%", background: "rgba(248,113,113,0.1)", border: "2px solid rgba(248,113,113,0.3)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>
+                <AlertTriangle size={36} color="var(--accent-red)" />
+              </div>
+              <h2 style={{ fontFamily: "var(--font-display)", fontSize: 26, fontWeight: 800, color: "var(--accent-red)", marginBottom: 12 }}>Low Credibility Report</h2>
+              <p style={{ color: "var(--text-secondary)", fontSize: 14, lineHeight: 1.7, marginBottom: 20 }}>
+                Your complaint has been analyzed by our AI verification system and received a <strong>confidence score of {submitResult.confidenceScore}%</strong>, which is below the 50% threshold for officer review.
+              </p>
+              
+              <div style={{ background: "rgba(248,113,113,0.06)", border: "1px solid rgba(248,113,113,0.2)", borderRadius: 12, padding: "20px 24px", marginBottom: 24, textAlign: "left" }}>
+                <p style={{ fontSize: 13, color: "var(--text-secondary)", margin: 0, lineHeight: 1.6 }}>
+                  <strong style={{ color: "var(--accent-red)" }}>Why was this flagged?</strong><br />
+                  This helps protect police officers' time by filtering unreliable or unverified complaints. If you believe this report is genuine, please resubmit with clear photographic or video evidence.
+                </p>
+              </div>
+
+              <div style={{ display: "flex", gap: 10 }}>
+                <Link to="/" className="btn btn-outline" style={{ flex: 1 }}>Back to Home</Link>
+                <button onClick={() => window.location.reload()} className="btn btn-primary" style={{ flex: 1, background: "var(--accent-red)", borderColor: "var(--accent-red)", color: "white" }}>Try Again</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div style={{ minHeight: "100vh", paddingTop: 80, background: "var(--gradient-hero)", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <div style={{ maxWidth: 480, width: "100%", margin: "0 auto", padding: "0 24px" }} className="animate-fadeInUp">
@@ -180,6 +213,14 @@ export default function ReportPage() {
                 <p style={{ color: "var(--text-muted)", fontSize: 13, marginBottom: 20 }}>
                   Upload photos or videos of the crime. Files are stored securely and only accessible to verified officials.
                 </p>
+                {files.length === 0 && (
+                  <div style={{ display: "flex", alignItems: "flex-start", gap: 10, padding: "12px 16px", background: "rgba(248,113,113,0.06)", border: "1px solid rgba(248,113,113,0.25)", borderRadius: 8, marginBottom: 16 }}>
+                    <AlertTriangle size={15} color="var(--accent-red)" style={{ flexShrink: 0, marginTop: 1 }} />
+                    <p style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.5, margin: 0 }}>
+                      <strong style={{ color: "var(--accent-red)" }}>No evidence attached.</strong> Submitting without any images or videos will set the report's credibility confidence to <strong>0%</strong>. Adding evidence significantly increases the chances of your report being taken seriously.
+                    </p>
+                  </div>
+                )}
                 <FileUpload files={files} setFiles={setFiles} maxFiles={5} />
 
                 <div style={{ marginTop: 24, display: "flex", gap: 10, justifyContent: "space-between" }}>

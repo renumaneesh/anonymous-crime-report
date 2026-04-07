@@ -6,6 +6,7 @@ require("dotenv").config();
 const authRoutes = require("./routes/auth");
 const reportRoutes = require("./routes/reports");
 const uploadRoutes = require("./routes/upload");
+const escalationRoutes = require("./routes/escalation");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -24,6 +25,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/api/auth", authRoutes);
 app.use("/api/reports", reportRoutes);
 app.use("/api/upload", uploadRoutes);
+app.use("/api/escalate", escalationRoutes);
 
 app.get("/api/health", (req, res) => {
   res.json({ status: "OK", message: "Crime Report API is running", timestamp: new Date().toISOString() });

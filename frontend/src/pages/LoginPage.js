@@ -6,7 +6,7 @@ import { authAPI } from "../utils/api";
 import { useAuth } from "../context/AuthContext";
 
 export default function LoginPage() {
-  const [form, setForm] = useState({ badgeId: "", password: "" });
+  const [form, setForm] = useState({ officerId: "", password: "" });
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -16,8 +16,8 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    if (!form.badgeId || !form.password) {
-      setError("Badge ID and password are required.");
+    if (!form.officerId || !form.password) {
+      setError("Officer ID and password are required.");
       return;
     }
     setLoading(true);
@@ -54,8 +54,13 @@ export default function LoginPage() {
           </div>
 
           {/* Demo credentials hint */}
-          <div style={{ background: "rgba(56,189,248,0.06)", border: "1px solid rgba(56,189,248,0.15)", borderRadius: 8, padding: "10px 14px", marginBottom: 20, fontSize: 12, color: "var(--text-secondary)" }}>
-            <strong style={{ color: "var(--accent-cyan)" }}>Demo:</strong> Badge: <code style={{ color: "var(--accent-amber)" }}>HYD-001</code> &nbsp;|&nbsp; Password: <code style={{ color: "var(--accent-amber)" }}>Police@123</code>
+          <div style={{ background: "rgba(56,189,248,0.06)", border: "1px solid rgba(56,189,248,0.15)", borderRadius: 8, padding: "12px 16px", marginBottom: 20 }}>
+            <strong style={{ color: "var(--accent-cyan)", fontSize: 13, display: "block", marginBottom: 8 }}>Demo Accounts:</strong>
+            <div style={{ display: "grid", gap: 6, fontSize: 12, color: "var(--text-secondary)" }}>
+              <div style={{ display: "flex", justifyContent: "space-between" }}><span>CI (Level 1): <code style={{ color: "var(--accent-amber)" }}>CI-HYD-001</code></span><span>Pass: <code style={{ color: "var(--accent-amber)" }}>CI@123</code></span></div>
+              <div style={{ display: "flex", justifyContent: "space-between" }}><span>SP (Level 2): <code style={{ color: "var(--accent-amber)" }}>SP-HYD-001</code></span><span>Pass: <code style={{ color: "var(--accent-amber)" }}>SP@123</code></span></div>
+              <div style={{ display: "flex", justifyContent: "space-between" }}><span>DGP (Level 3): <code style={{ color: "var(--accent-amber)" }}>DGP-TS-001</code></span><span>Pass: <code style={{ color: "var(--accent-amber)" }}>DGP@123</code></span></div>
+            </div>
           </div>
 
           {error && (
@@ -67,10 +72,10 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             <div className="form-group">
-              <label className="form-label">Badge ID</label>
+              <label className="form-label">Officer ID</label>
               <div style={{ position: "relative" }}>
                 <Shield size={15} style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }} />
-                <input className="form-control" style={{ paddingLeft: 36 }} placeholder="e.g. HYD-001" value={form.badgeId} onChange={e => setForm(f => ({ ...f, badgeId: e.target.value.toUpperCase() }))} autoComplete="username" />
+                <input className="form-control" style={{ paddingLeft: 36 }} placeholder="e.g. CI-HYD-001" value={form.officerId} onChange={e => setForm(f => ({ ...f, officerId: e.target.value.toUpperCase() }))} autoComplete="username" />
               </div>
             </div>
 

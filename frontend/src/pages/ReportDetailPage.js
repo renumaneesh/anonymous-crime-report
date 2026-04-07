@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, MapPin, Calendar, Shield, FileText, Image, Film, Save, AlertTriangle, ExternalLink } from "lucide-react";
+import { ArrowLeft, MapPin, Calendar, Shield, FileText, Image, Film, Save, AlertTriangle, ExternalLink, FastForward, Clock } from "lucide-react";
 import { reportAPI } from "../utils/api";
 import { StatusBadge, PriorityBadge } from "../components/StatusBadge";
+import AIVerdict from "../components/AIVerdict";
 import { toast } from "react-toastify";
 
 const STATUSES = ["Pending", "Under Review", "Resolved", "Rejected"];
@@ -85,6 +86,18 @@ export default function ReportDetailPage() {
                 <p style={{ fontSize: 13, color: "var(--text-secondary)" }}>Submitted {formatDate(report.submittedAt)}</p>
               </div>
             </div>
+
+            {report.corruptionFlagRaised && (
+              <div className="card animate-fadeInUp" style={{ padding: 16, borderLeft: "4px solid var(--accent-amber)", background: "rgba(251,191,36,0.05)", display: "flex", gap: 12 }}>
+                <AlertTriangle size={24} color="var(--accent-amber)" style={{ flexShrink: 0 }} />
+                <div>
+                  <h4 style={{ color: "var(--accent-amber)", fontSize: 16, fontWeight: 600, marginBottom: 4 }}>Corruption Complaint Escalation</h4>
+                  <p style={{ color: "var(--text-secondary)", fontSize: 14 }}>The citizen has flagged the previous rejection of this report as potentially corrupt. Reason provided: <em>"{report.corruptionFlagReason}"</em></p>
+                </div>
+              </div>
+            )}
+
+            <AIVerdict verification={report.aiVerification} />
 
             {/* Description */}
             {report.description && (
@@ -172,6 +185,26 @@ export default function ReportDetailPage() {
             <div className="card" style={{ padding: 16 }}>
               <p style={{ fontSize: 12, color: "var(--text-muted)", marginBottom: 4 }}>Last updated</p>
               <p style={{ fontSize: 13, color: "var(--text-secondary)" }}>{formatDate(report.updatedAt)}</p>
+            </div>
+
+            <div className="card animate-fadeInUp" style={{ animationDelay: "0.2s" }}>
+              <h3 style={{ fontFamily: "var(--font-display)", fontSize: 16, marginBottom: 16, display: "flex", alignItems: "center", gap: 8 }}>
+                <Clock size={16} color="var(--accent-cyan)" /> Escalation History
+              </h3>
+              {(!report.escalationHistory || report.escalationHistory.length === 0) ? (
+                <p style={{ fontSize: 13, color: "var(--text-muted)" }}>No escalations recorded.</p>
+              ) : (
+                <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                  {report.escalationHistory.map((esc, i) => (
+                    <div key={i} style={{ borderLeft: "2px solid var(--border)", paddingLeft: 12 }}>
+                      <p style={{ fontSize: 12, color: "var(--text-muted)", marginBottom: 2 }}>{formatDate(esc.timestamp)}</p>
+                      <p style={{ fontSize: 13, fontWeight: 500, color: "var(--text-primary)" }}>{esc.action}</p>
+                      <p style={{ fontSize: 13, color: "var(--text-secondary)" }}>By: {esc.officerName} ({esc.officerId})</p>
+                      {esc.reason && <p style={{ fontSize: 12, color: "var(--accent-amber)", marginTop: 4, fontStyle: "italic" }}>"{esc.reason}"</p>}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>

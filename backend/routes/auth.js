@@ -7,17 +7,17 @@ const { authenticateToken, generateToken } = require("../middleware/auth");
 // POST /api/auth/login
 router.post("/login", async (req, res) => {
   try {
-    const { badgeId, password } = req.body;
-    if (!badgeId || !password) {
-      return res.status(400).json({ success: false, message: "Badge ID and password are required." });
+    const { officerId, password } = req.body;
+    if (!officerId || !password) {
+      return res.status(400).json({ success: false, message: "Officer ID and password are required." });
     }
-    const official = db.findOfficialByBadge(badgeId.toUpperCase());
+    const official = db.findOfficialByOfficerId(officerId.toUpperCase());
     if (!official) {
-      return res.status(401).json({ success: false, message: "Invalid badge ID or password." });
+      return res.status(401).json({ success: false, message: "Invalid officer ID or password." });
     }
     const isMatch = await bcrypt.compare(password, official.password);
     if (!isMatch) {
-      return res.status(401).json({ success: false, message: "Invalid badge ID or password." });
+      return res.status(401).json({ success: false, message: "Invalid officer ID or password." });
     }
     const token = generateToken(official);
     const { password: _, ...officialData } = official;
@@ -30,20 +30,20 @@ router.post("/login", async (req, res) => {
 // POST /api/auth/register
 router.post("/register", async (req, res) => {
   try {
-    const { name, badgeId, email, password, rank, station } = req.body;
-    if (!name || !badgeId || !email || !password || !rank || !station) {
+    const { name, officerId, email, password, rank, station } = req.body;
+    if (!name || !officerId || !email || !password || !rank || !station) {
       return res.status(400).json({ success: false, message: "All fields are required." });
     }
-    if (db.findOfficialByBadge(badgeId.toUpperCase())) {
-      return res.status(409).json({ success: false, message: "Badge ID already registered." });
+    if (db.findOfficialByOfficerId(officerId.toUpperCase())) {
+      return res.status(409).json({ success: false, message: "Officer ID already registered." });
     }
     if (db.findOfficialByEmail(email.toLowerCase())) {
       return res.status(409).json({ success: false, message: "Email already registered." });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const newOfficial = db.addOfficial({
-      name, badgeId: badgeId.toUpperCase(), email: email.toLowerCase(),
-      password: hashedPassword, rank, station, role: "police",
+      name, officerId: officerId.toUpperCase(), email: email.toLowerCase(),
+      password: hashedPassword, rank, station, role: "ci", // default to ci or handle better if needed
     });
     const { password: _, ...officialData } = newOfficial;
     res.status(201).json({ success: true, message: "Account registered successfully.", official: officialData });
@@ -63,6 +63,22 @@ router.get("/profile", authenticateToken, (req, res) => {
 // POST /api/auth/verify
 router.post("/verify", authenticateToken, (req, res) => {
   res.json({ success: true, message: "Token is valid.", user: req.user });
+});
+
+// GET /api/auth/officers
+router.get("/officers", (req, res) => {
+  const officers = db.officials.map(o => {
+    const { password, ...rest } = o;
+    return rest;
+  });
+  
+  const grouped = {
+    ci: officers.filter(o => o.role === "ci"),
+    sp: officers.filter(o => o.role === "sp"),
+    dgp: officers.filter(o => o.role === "dgp")
+  };
+  
+  res.json({ success: true, officials: grouped });
 });
 
 module.exports = router;
