@@ -60,6 +60,9 @@ async function analyzeTextAndImages({ crimeType, description, address, imageFile
     }
 
     let dynamicPrompt = SYSTEM_PROMPT;
+    if (!imageFiles || imageFiles.length === 0) {
+      dynamicPrompt += `\n\nNOTE: The user DID NOT upload any images. Evaluate the credibility based SOLELY on the text description and the location provided. DO NOT mention that image evidence was provided or supports the assertion. You MUST set 'imageMatchScore' and 'aiGeneratedImageRisk' to null.`;
+    }
     dynamicPrompt += `\n\nCRITICAL SCORING RULE: Be highly critical. If the evidence does not clearly support the described crime, or if it appears to be fake or completely unrelated, strictly award a low credibilityScore (0-30), assign a 'fake' or 'suspicious' verdict, and set the recommendation to 'block' or 'review'. Award above 60 ONLY if the evidence is highly convincing and directly matches the description.`;
 
     const response = await axios.post("https://openrouter.ai/api/v1/chat/completions", {

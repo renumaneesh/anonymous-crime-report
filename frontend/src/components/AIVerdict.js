@@ -52,6 +52,7 @@ export default function AIVerdict({ verification }) {
           <div style={{ fontSize: 11, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 4 }}>Analyzed by</div>
           <div style={{ display: "flex", gap: 6, justifyContent: "flex-end" }}>
             {overall.verifiedBy.includes("openrouter") && <span style={{ fontSize: 12, display: "flex", alignItems: "center", gap: 4, background: "rgba(255,255,255,0.05)", padding: "2px 8px", borderRadius: 12 }}><Cpu size={12} color="var(--accent-cyan)" /> Gemini Flash</span>}
+            {overall.verifiedBy.includes("twelvelabs") && <span style={{ fontSize: 12, display: "flex", alignItems: "center", gap: 4, background: "rgba(255,255,255,0.05)", padding: "2px 8px", borderRadius: 12 }}><Film size={12} color="var(--accent-purple)" /> Twelve Labs AI</span>}
             {overall.verifiedBy.includes("gemini") && <span style={{ fontSize: 12, display: "flex", alignItems: "center", gap: 4, background: "rgba(255,255,255,0.05)", padding: "2px 8px", borderRadius: 12 }}><Film size={12} color="var(--accent-purple)" /> Gemini Video</span>}
           </div>
         </div>

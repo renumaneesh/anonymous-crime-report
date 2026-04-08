@@ -35,13 +35,13 @@ async function getOrCreateIndex() {
   if (cachedIndexId) return cachedIndexId;
   
   // TwelveLabs SDK v1+ usually exposes client.index
-  const indexesResponse = await client.index.list();
+  const indexesResponse = await client.indexes.list();
   // list() could return an array directly or inside data
   const indexList = Array.isArray(indexesResponse) ? indexesResponse : (indexesResponse.data || indexesResponse);
   
   let existing = null;
   if (Array.isArray(indexList)) {
-     existing = indexList.find(i => i.name === INDEX_NAME);
+     existing = indexList.find(i => i.name === INDEX_NAME || i.indexName === INDEX_NAME);
   }
   
   if (existing) {
@@ -49,11 +49,11 @@ async function getOrCreateIndex() {
     return cachedIndexId;
   }
 
-  const newIndex = await client.index.create({
-    name: INDEX_NAME,
+  const newIndex = await client.indexes.create({
+    indexName: INDEX_NAME,
     models: [
       {
-        modelName: "pegasus1.1",
+        modelName: "pegasus1.2",
         modelOptions: ["visual", "audio"],
       },
     ],
@@ -70,26 +70,28 @@ async function analyzeVideo({ crimeType, description, address, videoFilePath }) 
     const indexId = await getOrCreateIndex();
 
     // Upload & Index
-    const task = await client.task.create({
+    const task = await client.tasks.create({
       indexId: indexId,
-      file: fs.createReadStream(videoFilePath),
+      videoFile: fs.createReadStream(videoFilePath),
     });
 
     console.log("TwelveLabs: Wait for indexing...", task.id || task._id);
-    await task.waitForDone();
+    const completedTask = await client.tasks.waitForDone(task.id || task._id);
 
-    const videoId = task.videoId;
+    const videoId = completedTask.videoId;
     console.log("TwelveLabs: Indexing complete. Generating text...");
 
     // Generate JSON Analysis
     const prompt = VIDEO_ANALYSIS_PROMPT + "\n\nCrime Type: " + crimeType + "\nAddress: " + address + "\nCitizen Description: " + description;
     
     // Attempt generation
-    const response = await client.generate.text(videoId, prompt);
+    const response = await client.analyze({ videoId, prompt });
 
     let text = "";
     if (typeof response === "string") text = response;
-    else if (response.data) text = response.data;
+    else if (response.data) {
+      text = typeof response.data === "string" ? response.data : JSON.stringify(response.data);
+    }
     else text = JSON.stringify(response); // Fallback if structure changes
 
     text = text.replace(/```json/g, "").replace(/```/g, "").trim();
@@ -103,8 +105,8 @@ async function analyzeVideo({ crimeType, description, address, videoFilePath }) 
 
     // Try deleting to clean up anonymously
     try {
-      if (client.index.video && client.index.video.delete) {
-        await client.index.video.delete(indexId, videoId);
+      if (client.indexes && client.indexes.video && client.indexes.video.delete) {
+        await client.indexes.video.delete(indexId, videoId);
       }
     } catch(e) {}
 
