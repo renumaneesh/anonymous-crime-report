@@ -70,7 +70,7 @@ export default function ReportDetailPage() {
               <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", flexWrap: "wrap", gap: 12, marginBottom: 16 }}>
                 <div>
                   <code style={{ fontSize: 13, color: "var(--accent-cyan)", background: "var(--accent-cyan-dim)", padding: "4px 10px", borderRadius: 6, marginBottom: 8, display: "inline-block" }}>{report.trackingId}</code>
-                  <h1 style={{ fontFamily: "var(--font-display)", fontSize: 24, fontWeight: 800 }}>{report.crimeType}</h1>
+                  <h1 className="text-gradient" style={{ fontFamily: "var(--font-display)", fontSize: 24, fontWeight: 800 }}>{report.crimeType}</h1>
                 </div>
                 <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                   <StatusBadge status={report.status} />

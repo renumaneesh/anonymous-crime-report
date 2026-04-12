@@ -51,7 +51,7 @@ export default function DashboardPage() {
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 28, flexWrap: "wrap", gap: 12 }}>
           <div>
             <div className="section-tag" style={{ marginBottom: 8 }}><Shield size={13} /> Official Dashboard</div>
-            <h1 style={{ fontFamily: "var(--font-display)", fontSize: 28, fontWeight: 800 }}>Crime Reports</h1>
+            <h1 className="text-gradient" style={{ fontFamily: "var(--font-display)", fontSize: 28, fontWeight: 800 }}>Crime Reports</h1>
             <p style={{ color: "var(--text-secondary)", fontSize: 14, marginTop: 4 }}>Welcome, {user?.rank} {user?.name} · {user?.station}</p>
           </div>
           <button className="btn btn-outline" onClick={fetchData} style={{ gap: 6 }}>

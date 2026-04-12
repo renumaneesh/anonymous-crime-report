@@ -49,7 +49,7 @@ export default function LoginPage() {
             <div style={{ width: 60, height: 60, borderRadius: 14, background: "linear-gradient(135deg, rgba(56,189,248,0.15), rgba(59,130,246,0.1))", border: "1px solid rgba(56,189,248,0.25)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
               <Shield size={28} color="var(--accent-cyan)" />
             </div>
-            <h1 style={{ fontFamily: "var(--font-display)", fontSize: 24, fontWeight: 800, marginBottom: 6 }}>Official Login</h1>
+            <h1 className="text-gradient" style={{ fontFamily: "var(--font-display)", fontSize: 24, fontWeight: 800, marginBottom: 6 }}>Official Login</h1>
             <p style={{ color: "var(--text-secondary)", fontSize: 14 }}>Access restricted to verified police officials and higher authorities.</p>
           </div>
 

@@ -89,7 +89,7 @@ export default function TrackPage() {
 
         <div className="animate-fadeInUp">
           <div className="section-tag" style={{ marginBottom: 12 }}><Shield size={13} /> Anonymous Tracking</div>
-          <h1 style={{ fontFamily: "var(--font-display)", fontSize: 30, fontWeight: 800, marginBottom: 8 }}>Track Your Report</h1>
+          <h1 className="text-gradient" style={{ fontFamily: "var(--font-display)", fontSize: 30, fontWeight: 800, marginBottom: 8 }}>Track Your Report</h1>
           <p style={{ color: "var(--text-secondary)", fontSize: 14, marginBottom: 28, lineHeight: 1.7 }}>
             Enter your anonymous tracking ID to check the status of your crime report. No login required.
           </p>

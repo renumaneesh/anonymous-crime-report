@@ -73,7 +73,7 @@ export default function RegisterPage() {
             <div style={{ width: 56, height: 56, borderRadius: 12, background: "rgba(56,189,248,0.1)", border: "1px solid rgba(56,189,248,0.2)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 14px" }}>
               <Shield size={26} color="var(--accent-cyan)" />
             </div>
-            <h1 style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 800, marginBottom: 6 }}>Official Registration</h1>
+            <h1 className="text-gradient" style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 800, marginBottom: 6 }}>Official Registration</h1>
             <p style={{ color: "var(--text-secondary)", fontSize: 13 }}>Register your official credentials to access the crime reporting portal.</p>
           </div>
 

@@ -127,7 +127,7 @@ export default function ReportPage() {
             <ArrowLeft size={14} /> Back to home
           </Link>
           <div className="section-tag"><Lock size={13} /> Anonymous Report</div>
-          <h1 style={{ fontFamily: "var(--font-display)", fontSize: 32, fontWeight: 800, marginBottom: 8 }}>Submit a Crime Report</h1>
+          <h1 className="text-gradient" style={{ fontFamily: "var(--font-display)", fontSize: 32, fontWeight: 800, marginBottom: 8 }}>Submit a Crime Report</h1>
           <p style={{ color: "var(--text-secondary)", fontSize: 14 }}>Your identity is fully protected. No personal information is collected or stored.</p>
         </div>
 

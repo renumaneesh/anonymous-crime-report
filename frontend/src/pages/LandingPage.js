@@ -100,7 +100,7 @@ export default function LandingPage() {
           <div className="animate-fadeInUp">
             <h1 style={{ fontSize: "clamp(36px, 5vw, 58px)", fontWeight: 800, lineHeight: 1.1, marginBottom: 20 }}>
               Report Crime<br />
-              <span style={{ color: "var(--accent-cyan)" }}>Safely &amp; Anonymously</span>
+              <span className="text-gradient">Safely &amp; Anonymously</span>
             </h1>
             <p style={{ color: "var(--text-secondary)", fontSize: 16, lineHeight: 1.7, maxWidth: 480, marginBottom: 12 }}>
               Your identity is always protected. Help keep your community safe by reporting{" "}
@@ -196,7 +196,7 @@ export default function LandingPage() {
       <div style={{ position: "relative", padding: "80px 24px 120px", background: "rgba(10,15,28,0.4)", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
         <div className="content-container" style={{ maxWidth: 760, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 48 }} className="animate-fadeInUp">
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: 32, fontWeight: 800, marginBottom: 16 }}>Frequently Asked Questions</h2>
+            <h2 className="text-gradient" style={{ fontFamily: "var(--font-display)", fontSize: 32, fontWeight: 800, marginBottom: 16 }}>Frequently Asked Questions</h2>
             <p style={{ color: "var(--text-secondary)", fontSize: 15, maxWidth: 500, margin: "0 auto" }}>Everything you need to know about how our anonymous reporting system works and protects you.</p>
           </div>
           <div className="animate-fadeInUp" style={{ animationDelay: "0.2s" }}>
