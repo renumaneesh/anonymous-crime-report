@@ -283,3 +283,54 @@ tbody tr:hover td { background: rgba(255,255,255,0.03); }
   box-shadow: var(--shadow-card), var(--shadow-glow) !important;
 }
 .Toastify__progress-bar { background: var(--gradient-text) !important; }
+
+/* ─── Mobile Responsiveness ─── */
+@media (max-width: 768px) {
+  /* Fix main containers */
+  .content-container { padding: 0 16px; }
+  .page-container { padding-top: 60px !important; }
+  
+  /* Cards */
+  .card { padding: 16px; }
+  
+  /* Fix grid layouts that were hardcoded in inline styles */
+  div[style*="gridTemplateColumns"] {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  
+  /* Form elements */
+  .form-control {
+    font-size: 16px !important; /* Prevents iOS Safari from zooming in on focus */
+    padding: 14px;
+  }
+  
+  /* Buttons */
+  .btn { width: 100%; justify-content: center; margin-bottom: 8px; }
+  .btn-sm, .btn-lg { width: 100%; }
+  
+  /* Tables */
+  .table-wrapper {
+    margin: 0 -16px; /* Let it bleed to edges on mobile */
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+  
+  /* Text sizing */
+  h1 { font-size: 28px !important; }
+  h2 { font-size: 24px !important; }
+  h3 { font-size: 20px !important; }
+  
+  /* Fix flex layouts that wrap too early or don't wrap */
+  div[style*="display: flex"] {
+    flex-wrap: wrap;
+  }
+  
+  /* Modal / Overlays */
+  div[style*="maxWidth: 800px"] {
+    width: 95% !important;
+    max-width: 100% !important;
+    margin: 10px !important;
+  }
+}
