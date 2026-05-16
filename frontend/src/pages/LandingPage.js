@@ -94,10 +94,10 @@ export default function LandingPage() {
 
       {/* Hero */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh", paddingTop: 64 }}>
-        <div className="content-container" style={{ display: "grid", gridTemplateColumns: "1fr 420px", gap: 60, alignItems: "center", padding: "80px 24px" }}>
+        <div className="content-container hero-grid" style={{ display: "grid", gridTemplateColumns: "1fr 420px", gap: 60, alignItems: "center", padding: "80px 24px" }}>
 
           {/* Left: hero text */}
-          <div className="animate-fadeInUp">
+          <div className="hero-text-block animate-fadeInUp">
             <h1 style={{ fontSize: "clamp(36px, 5vw, 58px)", fontWeight: 800, lineHeight: 1.1, marginBottom: 20 }}>
               Report Crime<br />
               <span className="text-gradient">Safely &amp; Anonymously</span>

@@ -283,3 +283,15 @@ tbody tr:hover td { background: rgba(255,255,255,0.03); }
   box-shadow: var(--shadow-card), var(--shadow-glow) !important;
 }
 .Toastify__progress-bar { background: var(--gradient-text) !important; }
+
+/* ─── Mobile Specific Landing Page Overrides ─── */
+@media (max-width: 768px) {
+  .hero-text-block {
+    display: none !important;
+  }
+  .hero-grid {
+    grid-template-columns: 1fr !important;
+    padding: 20px 16px !important;
+    gap: 0 !important;
+  }
+}
