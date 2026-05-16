@@ -29,36 +29,44 @@ export default function Navbar() {
             <div style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 15, color: "var(--text-primary)", lineHeight: 1.1 }}>
               Anonymous Crime <span style={{ color: "var(--accent-cyan)" }}>Reporting</span>
             </div>
-            <div style={{ fontSize: 10, color: "var(--text-muted)", letterSpacing: "0.12em" }}>SECURE • ANONYMOUS • CONFIDENTIAL</div>
+            <div className="mobile-hide" style={{ fontSize: 10, color: "var(--text-muted)", letterSpacing: "0.12em" }}>SECURE • ANONYMOUS • CONFIDENTIAL</div>
           </div>
         </Link>
 
-        {/* Desktop nav */}
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <WeatherWidget />
-          {!user ? (
-            <>
-              <Link to="/track" className="btn btn-outline btn-sm" style={isActive("/track") ? { borderColor: "var(--accent-cyan)", color: "var(--accent-cyan)" } : {}}>
-                Track Report
-              </Link>
-              <Link to="/login" className="btn btn-outline btn-sm">Login</Link>
-              <Link to="/register" className="btn btn-primary btn-sm">Register</Link>
-            </>
-          ) : (
-            <>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 12px", background: "var(--accent-cyan-dim)", border: "1px solid rgba(56,189,248,0.2)", borderRadius: 8, fontSize: 13 }}>
-                <Shield size={14} color="var(--accent-cyan)" />
-                <span style={{ color: "var(--accent-cyan)", fontWeight: 500 }}>{user.rank}</span>
-                <span style={{ color: "var(--text-secondary)" }}>{user.badgeId}</span>
-              </div>
-              <Link to="/dashboard" className="btn btn-outline btn-sm" style={{ gap: 6 }}>
-                <LayoutDashboard size={14} /> Dashboard
-              </Link>
-              <button className="btn btn-outline btn-sm" onClick={handleLogout} style={{ gap: 6, color: "var(--accent-red)", borderColor: "rgba(248,113,113,0.3)" }}>
-                <LogOut size={14} /> Logout
-              </button>
-            </>
-          )}
+        {/* Desktop & Mobile Menu */}
+        <div>
+          {/* Mobile menu toggle */}
+          <button className="mobile-menu-btn" onClick={() => setMenuOpen(!menuOpen)}>
+            {menuOpen ? <X size={24} color="var(--text-primary)" /> : <Menu size={24} color="var(--text-primary)" />}
+          </button>
+
+          {/* Nav Links */}
+          <div className={`nav-links ${menuOpen ? "open" : ""}`} onClick={() => setMenuOpen(false)}>
+            <WeatherWidget />
+            {!user ? (
+              <>
+                <Link to="/track" className="btn btn-outline btn-sm" style={isActive("/track") ? { borderColor: "var(--accent-cyan)", color: "var(--accent-cyan)" } : {}}>
+                  Track Report
+                </Link>
+                <Link to="/login" className="btn btn-outline btn-sm">Login</Link>
+                <Link to="/register" className="btn btn-primary btn-sm">Register</Link>
+              </>
+            ) : (
+              <>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 12px", background: "var(--accent-cyan-dim)", border: "1px solid rgba(56,189,248,0.2)", borderRadius: 8, fontSize: 13 }}>
+                  <Shield size={14} color="var(--accent-cyan)" />
+                  <span style={{ color: "var(--accent-cyan)", fontWeight: 500 }}>{user.rank}</span>
+                  <span style={{ color: "var(--text-secondary)" }}>{user.badgeId}</span>
+                </div>
+                <Link to="/dashboard" className="btn btn-outline btn-sm" style={{ gap: 6 }}>
+                  <LayoutDashboard size={14} /> Dashboard
+                </Link>
+                <button className="btn btn-outline btn-sm" onClick={handleLogout} style={{ gap: 6, color: "var(--accent-red)", borderColor: "rgba(248,113,113,0.3)" }}>
+                  <LogOut size={14} /> Logout
+                </button>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </nav>

@@ -70,27 +70,7 @@ export default function LandingPage() {
       <div style={{ position: "absolute", top: "15%", left: "10%", width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, rgba(56,189,248,0.06) 0%, transparent 70%)", pointerEvents: "none" }} />
       <div style={{ position: "absolute", bottom: "20%", right: "8%", width: 300, height: 300, borderRadius: "50%", background: "radial-gradient(circle, rgba(167,139,250,0.06) 0%, transparent 70%)", pointerEvents: "none" }} />
 
-      {/* Navbar */}
-      <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, background: "rgba(10,15,28,0.9)", backdropFilter: "blur(12px)", borderBottom: "1px solid var(--border)" }}>
-        <div className="content-container" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 64 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <div style={{ width: 36, height: 36, borderRadius: 8, background: "rgba(56,189,248,0.12)", border: "1px solid rgba(56,189,248,0.3)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <Shield size={18} color="var(--accent-cyan)" />
-            </div>
-            <div>
-              <div style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 15, lineHeight: 1.1 }}>
-                Anonymous Crime <span style={{ color: "var(--accent-cyan)" }}>Reporting System</span>
-              </div>
-              <div style={{ fontSize: 9, color: "var(--text-muted)", letterSpacing: "0.14em" }}>SECURE • ANONYMOUS • CONFIDENTIAL</div>
-            </div>
-          </div>
-          <div style={{ display: "flex", gap: 8 }}>
-            <WeatherWidget />
-            <Link to="/login" className="btn btn-outline btn-sm">Login</Link>
-            <Link to="/register" className="btn btn-primary btn-sm">Register</Link>
-          </div>
-        </div>
-      </nav>
+      {/* Global Navbar handles the header */}
 
       {/* Hero */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh", paddingTop: 64 }}>

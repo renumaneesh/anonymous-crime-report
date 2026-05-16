@@ -285,6 +285,9 @@ tbody tr:hover td { background: rgba(255,255,255,0.03); }
 .Toastify__progress-bar { background: var(--gradient-text) !important; }
 
 /* ─── Mobile Specific Landing Page Overrides ─── */
+.mobile-menu-btn { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
+.nav-links { display: flex; align-items: center; gap: 8px; }
+
 @media (max-width: 768px) {
   .hero-text-block {
     display: none !important;
@@ -293,5 +296,24 @@ tbody tr:hover td { background: rgba(255,255,255,0.03); }
     grid-template-columns: 1fr !important;
     padding: 20px 16px !important;
     gap: 0 !important;
+  }
+  .mobile-hide {
+    display: none !important;
+  }
+  
+  /* Navbar Menu */
+  .mobile-menu-btn { display: block; }
+  .nav-links {
+    position: absolute; top: 64px; left: 0; right: 0;
+    background: rgba(10,15,28,0.98); backdrop-filter: blur(16px);
+    flex-direction: column; padding: 24px; gap: 16px;
+    border-bottom: 1px solid var(--border);
+    transition: all 0.3s ease;
+    opacity: 0; pointer-events: none;
+    transform: translateY(-10px);
+  }
+  .nav-links.open {
+    opacity: 1; pointer-events: auto;
+    transform: translateY(0);
   }
 }
